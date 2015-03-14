@@ -71,4 +71,22 @@ public class HotelTest {
         hotel.addRoom(rm);
         assertEquals(3, hotel.totalRooms());
     }
+
+    @Test
+    public void testEnqueryShouldGiveListOfAvailableRooms() {
+        rooms.add(new Room(2, 3, 201, 2));
+        rooms.add(new Room(2, 3, 202, 2));
+        rooms.add(new Room(1, 2, 102, 1));
+        List<Room> rm = hotel.enquery(sukhvindar.getDetails(), 3);
+        assertEquals(rm.size(), 3);
+    }
+
+    @Test
+    public void testEnqueryShouldGiveNullWhenNoRoomsAvailable() {
+        rooms.add(new Room(2, 3, 201, 2));
+        rooms.add(new Room(2, 3, 202, 2));
+        rooms.add(new Room(1, 2, 102, 1));
+        List<Room> rm = hotel.enquery(sukhvindar.getDetails(), 4);
+        assertNull(rm);
+    }
 }
