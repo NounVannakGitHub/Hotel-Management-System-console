@@ -27,7 +27,7 @@ public class HotelTest {
 
         hotel = new Hotel("Treejon Guest House", rooms, "Puri");
         hotel.addManager("Santosh");
-        sukhvindar = new Customer("Sukhvindar", new City("Chandigarh"), 42, 1234);
+        sukhvindar = new Customer("Sukhvindar", new City("Chandigarh", "Punjab", "India"), 42, 1234);
     }
 
     @After
@@ -39,13 +39,13 @@ public class HotelTest {
 
     @Test
     public void testCustomerShouldGetRoomIfAvailable() {
-        Room rm = hotel.getRoom(sukhvindar.getDetails(), 3);
+        Room rm = hotel.getRoom(sukhvindar.toString(), 3);
         assertNotNull(rm);
     }
 
     @Test
     public void testCustomerShouldGetRoomIfNotAvailable() {
-        Room rm = hotel.getRoom(sukhvindar.getDetails(), 4);
+        Room rm = hotel.getRoom(sukhvindar.toString(), 4);
         assertNull(rm);
     }
 
@@ -56,7 +56,7 @@ public class HotelTest {
         rooms.add(new Room(2, 3, 202, 2));
         rooms.add(new Room(1, 2, 102, 1));
 
-        Room rm = hotel.getRoom(sukhvindar.getDetails(), 3);
+        Room rm = hotel.getRoom(sukhvindar.toString(), 3);
         assertNotNull(rm);
     }
 
@@ -77,7 +77,7 @@ public class HotelTest {
         rooms.add(new Room(2, 3, 201, 2));
         rooms.add(new Room(2, 3, 202, 2));
         rooms.add(new Room(1, 2, 102, 1));
-        List<Room> rm = hotel.enquery(sukhvindar.getDetails(), 3);
+        List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
         assertEquals(rm.size(), 3);
     }
 
@@ -86,7 +86,12 @@ public class HotelTest {
         rooms.add(new Room(2, 3, 201, 2));
         rooms.add(new Room(2, 3, 202, 2));
         rooms.add(new Room(1, 2, 102, 1));
-        List<Room> rm = hotel.enquery(sukhvindar.getDetails(), 4);
+        List<Room> rm = hotel.enquery(sukhvindar.toString(), 4);
         assertNull(rm);
+    }
+
+    @Test
+    public void testShouldBookARoomForAGuest() {
+        // Write Your test body here....
     }
 }
