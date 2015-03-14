@@ -7,9 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by kaustavc on 3/14/2015.
@@ -92,6 +90,10 @@ public class HotelTest {
 
     @Test
     public void testShouldBookARoomForAGuest() {
-        // Write Your test body here....
+        List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
+        assertTrue(rm.contains(new Room(2, 3, 101, 2)));
+
+        Room room = hotel.book(101);
+        assertNull(hotel.enquery(sukhvindar.toString(), 3));
     }
 }
