@@ -93,7 +93,18 @@ public class HotelTest {
         List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
         assertTrue(rm.contains(new Room(2, 3, 101, 2)));
 
+        hotel.book(101);
+        assertNull(hotel.enquery(sukhvindar.toString(), 3));
+    }
+
+    @Test
+    public void testShouldReleaseARoomForAGuest() {
+        List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
+        assertTrue(rm.contains(new Room(2, 3, 101, 2)));
+
         Room room = hotel.book(101);
         assertNull(hotel.enquery(sukhvindar.toString(), 3));
+        hotel.release(room);
+        assertTrue(hotel.enquery(sukhvindar.toString(), 3).contains(new Room(2, 3, 101, 2)));
     }
 }
