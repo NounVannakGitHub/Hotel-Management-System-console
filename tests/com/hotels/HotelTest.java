@@ -24,6 +24,7 @@ public class HotelTest {
         rooms.add(new Room(2, 3, 101, 2, 350));
 
         hotel = new Hotel("Treejon Guest House", rooms, "Puri");
+        hotel.initiateRegister();
         hotel.addManager("Santosh");
         sukhvindar = new Customer("Sukhvindar", new City("Chandigarh", "Punjab", "India"), 42, 1234);
     }
@@ -93,7 +94,7 @@ public class HotelTest {
         List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
         assertTrue(rm.contains(new Room(2, 3, 101, 2, 300)));
 
-        hotel.book(101);
+        hotel.book(sukhvindar.toString(), 101, new Date(2015, 03, 15), new Date(2015, 03, 17));
         assertNull(hotel.enquery(sukhvindar.toString(), 3));
     }
 
@@ -102,7 +103,7 @@ public class HotelTest {
         List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
         assertTrue(rm.contains(new Room(2, 3, 101, 2, 300)));
 
-        Room room = hotel.book(101);
+        Room room = hotel.book(sukhvindar.toString(), 101, new Date(2015, 03, 15), new Date(2015, 03, 17));
         assertNull(hotel.enquery(sukhvindar.toString(), 3));
         hotel.release(room);
         assertTrue(hotel.enquery(sukhvindar.toString(), 3).contains(new Room(2, 3, 101, 2, 300)));
@@ -113,5 +114,31 @@ public class HotelTest {
         List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
         String expected = "Bed: 2\nMaximum Capacity: 3 persons\nRoom no.: 101\nFloor: 2\nTariff: Rs.350";
         assertEquals(expected, rm.get(0).toString());
+    }
+
+    @Test
+    public void testShouldGetTheRecentRegistry() {
+        List<Room> rm = hotel.enquery(sukhvindar.toString(), 3);
+        assertTrue(rm.contains(new Room(2, 3, 101, 2, 300)));
+
+        hotel.book(sukhvindar.toString(), 101, new Date(2015, 03, 15), new Date(2015, 03, 17));
+
+        List<Entry> register = hotel.getRegister();
+        assertEquals(1, register.size());
+        assertEquals(1050, register.get(0).totalAmount());
+    }
+
+    @Test
+    public void testShouldGetTheTotalTransactionAtTheEndOfTheDay() {
+        hotel.enquery(sukhvindar.toString(), 3);
+
+        rooms.add(new Room(2, 3, 201, 2, 300));
+        rooms.add(new Room(2, 3, 202, 2, 300));
+
+        hotel.book(sukhvindar.toString(), 101, new Date(2015, 03, 15), new Date(2015, 03, 17));
+        hotel.book(sukhvindar.toString(), 201, new Date(2015, 03, 15), new Date(2015, 03, 17));
+
+        hotel.getRegister();
+        assertEquals(1950, hotel.totalTransaction());
     }
 }
